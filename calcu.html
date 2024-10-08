@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Kitty Calculator</title>
+    <link rel="stylesheet" href="style1.css">
+    <div class="cal">
+        <input type="text" id="display" disabled>
+        <div class="buttons">
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="setOperation('+')">+</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="setOperation('-')">-</button>
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="setOperation('*')">*</button>
+            <button onclick="appendNumber(0)">0</button>
+            <button onclick="clearDisplay()">AC</button>
+            <button onclick="setOperation('/')">/</button>
+            <button onclick="calculate()">=</button>
+          
+
+        </div>
+    </div>
+</head>
+<body>
+    <script>
+       let display = document.getElementById('display');
+let firstOperand = '';
+let secondOperand = '';
+let currentOperation = null;
+let shouldResetDisplay = false;
+
+function appendNumber(number) {
+    if (display.value === '0' || shouldResetDisplay) {
+        resetDisplay();
+    }
+    display.value += number;
+}
+
+function resetDisplay() {
+    display.value = '';
+    shouldResetDisplay = false;
+}
+
+function clearDisplay() {
+    display.value = '';
+    firstOperand = '';
+    secondOperand = '';
+    currentOperation = null;
+}
+
+function setOperation(operation) {
+    if (currentOperation !== null) {
+        calculate();
+    }
+    firstOperand = display.value;
+    currentOperation = operation;
+    display.value += ` ${operation} `;
+    shouldResetDisplay = true;
+}
+
+function calculate() {
+    if (currentOperation === null || shouldResetDisplay) return;
+    secondOperand = display.value.split(' ').pop();
+    if (currentOperation === '/' && secondOperand === '0') {
+        alert("You can't divide by 0!");
+        return;
+    }
+    display.value = operate(currentOperation, firstOperand, secondOperand);
+    currentOperation = null;
+}
+
+function operate(operation, a, b) {
+    a = parseFloat(a);
+    b = parseFloat(b);
+    switch (operation) {
+        case '+':
+            return a + b;
+        case '-':
+            return a - b;
+        case '*':
+            return a * b;
+        case '/':
+            return a / b;
+        default:
+            return null;
+    }
+}
+    </script>
+</body>
+</html>
